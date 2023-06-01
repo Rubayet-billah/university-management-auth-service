@@ -9,4 +9,5 @@ export default {
   port: process.env.PORT,
   dbUser: process.env.DB_USER,
   dbPass: process.env.DB_PASS,
+  defaultUserPass: process.env.DEFAULT_USER_PASS,
 }
