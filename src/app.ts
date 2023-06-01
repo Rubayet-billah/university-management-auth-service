@@ -4,6 +4,25 @@ import cors from "cors";
 const app: Application = express();
 
 // cors
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.use(cors());
 
 // parser middleware
