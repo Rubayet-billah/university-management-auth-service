@@ -1,20 +1,21 @@
-import mongoose from "mongoose";
-import app from "./app";
-import dotenv from "../src/config/index";
+import mongoose from 'mongoose'
+import envObj from '../src/config/index'
+import app from './app'
+import { errorLogger, logger } from './shared/logger'
 
 async function main() {
   try {
     await mongoose.connect(
-      `mongodb+srv://${dotenv.dbUser}:${dotenv.dbPass}@cluster0.bhwsqpg.mongodb.net/?retryWrites=true&w=majority`
-    );
-    app.listen(dotenv.port, () => {
-      console.log(`Example app listening on port ${dotenv.port}`);
-    });
+      `mongodb+srv://${envObj.dbUser}:${envObj.dbPass}@cluster0.bhwsqpg.mongodb.net/university-management?retryWrites=true&w=majority`
+    )
+    app.listen(envObj.port, () => {
+      logger.info(`Example app listening on port ${envObj.port}`)
+    })
 
-    console.log("Database connected successfully");
+    logger.info('Database connected successfully')
   } catch (error) {
-    console.log("Failed to connect Database", error);
+    errorLogger.error('Failed to connect Database', error)
   }
 }
 
-main();
+main()

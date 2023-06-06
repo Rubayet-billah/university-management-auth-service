@@ -1,17 +1,27 @@
-import express, { Application } from "express";
-import cors from "cors";
+import cors from 'cors'
+import express, { Application } from 'express'
+import globalErrorHandler from './app/middlewares/errorHandlers'
+import router from './app/modules/users/users.route'
+import ApiError from './errors/ApiError'
 
-const app: Application = express();
+const app: Application = express()
 
 // cors
-app.use(cors());
+
+app.use(cors())
 
 // parser middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// Application routes
+app.use('/api/v1/users/', router)
 
-export default app;
+app.get('/', async () => {
+  throw new ApiError(400, 'baler request')
+})
+
+// error handler middleware
+app.use(globalErrorHandler)
+
+export default app
