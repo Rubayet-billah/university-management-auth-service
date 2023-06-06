@@ -1,6 +1,7 @@
+import envObj from '../../../config/index'
+import ApiError from '../../../errors/ApiError'
 import { IUser } from './users.interface'
 import { User } from './users.model'
-import envObj from '../../../config/index'
 import { generateUserId } from './users.utils'
 
 const createUser = async (user: IUser): Promise<IUser | null> => {
@@ -14,7 +15,7 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
 
   const createdUser = await User.create(user)
   if (!createdUser) {
-    throw Error('Create user failed')
+    throw new ApiError(500, 'Create user failed')
   }
   return createdUser
 }
