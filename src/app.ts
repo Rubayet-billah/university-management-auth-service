@@ -1,8 +1,7 @@
 import cors from 'cors'
-import express, { Application } from 'express'
-import globalErrorHandler from './app/middlewares/errorHandlers'
+import express, { Application, Request, Response } from 'express'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
 import router from './app/modules/users/users.route'
-import ApiError from './errors/ApiError'
 
 const app: Application = express()
 
@@ -17,8 +16,9 @@ app.use(express.urlencoded({ extended: true }))
 // Application routes
 app.use('/api/v1/users/', router)
 
-app.get('/', async () => {
-  throw new ApiError(400, 'baler request')
+// eslint-disable-next-line no-unused-vars
+app.get('/', async (req: Request, res: Response) => {
+  Promise.reject('Unhandled promise error')
 })
 
 // error handler middleware

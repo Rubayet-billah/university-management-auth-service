@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-expressions */
 import { NextFunction, Request, Response } from 'express'
 import envObj from '../../config/index'
 import ApiError from '../../errors/ApiError'
 import handleValidationError from '../../errors/handleValidationError'
 import { IGenericErrorMessage } from '../../interfaces/error'
+import { errorLogger } from '../../shared/logger'
 
 const globalErrorHandler = (
   error: any,
@@ -10,6 +12,10 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  envObj.env === 'development'
+    ? console.log('globalErrorHandler', error)
+    : errorLogger.error('globalErrorHandler', error)
+
   let statusCode = 500
   let message = 'Something went wrong'
   let errorMessages: IGenericErrorMessage[] = []
