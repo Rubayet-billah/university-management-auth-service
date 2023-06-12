@@ -1,4 +1,6 @@
+import status from 'http-status';
 import { Model, Schema, model } from 'mongoose';
+import ApiError from '../../../errors/ApiError';
 import {
   academicSemesterCode,
   academicSemesterMonth,
@@ -39,6 +41,18 @@ const academicSemesterSchema = new Schema<IAcademicSemester>(
     timestamps: true,
   }
 );
+
+// use mongoose pre hook for checking existing value
+academicSemesterSchema.pre('save', async function (next) {
+  const ifExist = await AcademicSemester.findOne({
+    title: this.title,
+    year: this.year,
+  });
+  if (ifExist) {
+    throw new ApiError(status.CONFLICT, 'Semester already exists');
+  }
+  next();
+});
 
 export const AcademicSemester = model<IAcademicSemester, AcademicSemesterModel>(
   'AcademicSemester',
