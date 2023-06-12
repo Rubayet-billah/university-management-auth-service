@@ -1,8 +1,7 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
-import { academicSemeterRoutes } from './app/modules/academicSemester/academicSemester.route';
-import { userRoutes } from './app/modules/user/user.route';
+import router from './app/routes';
 
 const app: Application = express();
 
@@ -15,8 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Application routes
-app.use('/api/v1/users/', userRoutes);
-app.use('/api/v1/academic-semesters/', academicSemeterRoutes);
+app.use('/api/v1', router);
 
 // eslint-disable-next-line no-unused-vars
 app.get('/', async (req: Request, res: Response) => {
