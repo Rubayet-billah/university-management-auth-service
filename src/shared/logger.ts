@@ -1,3 +1,4 @@
+import path from 'path';
 import { createLogger, format, transports } from 'winston';
 import 'winston-daily-rotate-file';
 
@@ -22,19 +23,19 @@ const logger = createLogger({
   defaultMeta: { service: 'user-service' },
   transports: [
     new transports.Console(),
-    // new transports.DailyRotateFile({
-    //   filename: path.join(
-    //     process.cwd(),
-    //     'logs',
-    //     'winston',
-    //     'successes',
-    //     'PHU-%DATE%-success.log'
-    //   ),
-    //   datePattern: 'YYYY-MM-DD-HH',
-    //   zippedArchive: true,
-    //   maxSize: '20m',
-    //   maxFiles: '14d',
-    // }),
+    new transports.DailyRotateFile({
+      filename: path.join(
+        process.cwd(),
+        'logs',
+        'winston',
+        'successes',
+        'PHU-%DATE%-success.log'
+      ),
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '14d',
+    }),
   ],
 });
 
@@ -45,19 +46,19 @@ const errorLogger = createLogger({
   defaultMeta: { service: 'user-service' },
   transports: [
     new transports.Console(),
-    // new transports.DailyRotateFile({
-    //   filename: path.join(
-    //     process.cwd(),
-    //     'logs',
-    //     'winston',
-    //     'errors',
-    //     'PHU-%DATE%-error.log'
-    //   ),
-    //   datePattern: 'YYYY-MM-DD-HH',
-    //   zippedArchive: true,
-    //   maxSize: '20m',
-    //   maxFiles: '14d',
-    // }),
+    new transports.DailyRotateFile({
+      filename: path.join(
+        process.cwd(),
+        'logs',
+        'winston',
+        'errors',
+        'PHU-%DATE%-error.log'
+      ),
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '14d',
+    }),
   ],
 });
 

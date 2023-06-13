@@ -1,5 +1,6 @@
 import cors from 'cors';
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import router from './app/routes';
 
@@ -17,11 +18,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1', router);
 
 // eslint-disable-next-line no-unused-vars
-app.get('/', async (req: Request, res: Response) => {
-  Promise.reject('Unhandled promise error');
-});
+// app.get('/', async (req: Request, res: Response) => {
+//   Promise.reject('Unhandled promise error');
+// });
 
 // error handler middleware
 app.use(globalErrorHandler);
+
+// not found handler
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: 'Not found',
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: 'API not found',
+      },
+    ],
+  });
+  next();
+});
 
 export default app;
