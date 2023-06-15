@@ -1,19 +1,15 @@
 /* eslint-disable no-unused-expressions */
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { ZodError } from 'zod';
 import envObj from '../../config/index';
 import ApiError from '../../errors/ApiError';
+import handleCastError from '../../errors/handleCastError';
 import handleValidationError from '../../errors/handleValidationError';
 import handleZodError from '../../errors/handleZodError';
 import { IGenericErrorMessage } from '../../interfaces/error';
 import { errorLogger } from '../../shared/logger';
 
-const globalErrorHandler = (
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const globalErrorHandler = (error: any, req: Request, res: Response) => {
   envObj.env === 'development'
     ? console.log('globalErrorHandler', error)
     : errorLogger.error('globalErrorHandler', error);
@@ -29,6 +25,11 @@ const globalErrorHandler = (
     errorMessages = simplifiedError.errorMessages;
   } else if (error instanceof ZodError) {
     const simplifiedError = handleZodError(error);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
+  } else if (error?.name === 'CastError') {
+    const simplifiedError = handleCastError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
@@ -61,7 +62,6 @@ const globalErrorHandler = (
     errorMessages,
     stack: envObj.env !== 'production' ? error?.stack : undefined,
   });
-  next();
 };
 
 export default globalErrorHandler;
