@@ -2,10 +2,9 @@ import { Server } from 'http';
 import mongoose from 'mongoose';
 import envObj from '../src/config/index';
 import app from './app';
-import { errorLogger, logger } from './shared/logger';
 
 process.on('uncaughtException', error => {
-  errorLogger.error(error);
+  console.log(error);
   process.exit(1);
 });
 
@@ -16,19 +15,19 @@ async function main() {
       `mongodb+srv://${envObj.dbUser}:${envObj.dbPass}@cluster0.bhwsqpg.mongodb.net/university-management?retryWrites=true&w=majority`
     );
     server = app.listen(envObj.port, () => {
-      logger.info(`Example app listening on port ${envObj.port}`);
+      console.log(`Example app listening on port ${envObj.port}`);
     });
 
-    logger.info('Database connected successfully');
+    console.log('Database connected successfully');
   } catch (error) {
-    errorLogger.error('Failed to connect Database', error);
+    console.log('Failed to connect Database', error);
   }
 
   process.on('unhandledRejection', error => {
     console.log('Unhandled rejection is detected, closing server', error);
     if (server) {
       server.close(() => {
-        errorLogger.error(error);
+        console.log(error);
         process.exit(1);
       });
     } else {
@@ -40,7 +39,7 @@ async function main() {
 main();
 
 process.on('SIGTERM', () => {
-  logger.info('SIGTERM is received');
+  console.log('SIGTERM is received');
   if (server) {
     server.close();
   }

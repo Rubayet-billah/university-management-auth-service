@@ -7,12 +7,11 @@ import handleCastError from '../../errors/handleCastError';
 import handleValidationError from '../../errors/handleValidationError';
 import handleZodError from '../../errors/handleZodError';
 import { IGenericErrorMessage } from '../../interfaces/error';
-import { errorLogger } from '../../shared/logger';
 
 const globalErrorHandler = (error: any, req: Request, res: Response) => {
   envObj.env === 'development'
-    ? console.log('globalErrorHandler', error)
-    : errorLogger.error('globalErrorHandler', error);
+    ? console.log('globalErrorHandler')
+    : console.log('globalErrorHandler', error);
 
   let statusCode = 500;
   let message = 'Something went wrong';
@@ -62,6 +61,7 @@ const globalErrorHandler = (error: any, req: Request, res: Response) => {
     errorMessages,
     stack: envObj.env !== 'production' ? error?.stack : undefined,
   });
+  // next();
 };
 
 export default globalErrorHandler;
