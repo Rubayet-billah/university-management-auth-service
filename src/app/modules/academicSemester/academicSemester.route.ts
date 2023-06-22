@@ -1,21 +1,27 @@
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
-import { academicSemesterController } from './academicSemester.controller';
-import { academicSemesterValidation } from './academicSemester.validation';
+// import { UserController } from './user.controller';
 
-const routes = express.Router();
-routes.post(
-  '/create-academic-semester',
-  validateRequest(academicSemesterValidation.createAcademicSemesterZodSchema),
-  academicSemesterController.createSemester
+import { AcademicSemesterController } from './academicSemester.controller';
+import { AcademicSemesterValidation } from './acdemicSemester.validation';
+const router = express.Router();
+
+router.post(
+  '/create-semester',
+  validateRequest(AcademicSemesterValidation.createAcademicSemesterZodSchema),
+  AcademicSemesterController.createSemester
 );
-routes.get('/:id', academicSemesterController.getSingleSemester);
-routes.patch(
+
+router.get('/:id', AcademicSemesterController.getSingleSemester);
+
+router.patch(
   '/:id',
-  validateRequest(academicSemesterValidation.updateAcademicSemesterZodSchema),
-  academicSemesterController.updateSemester
+  validateRequest(AcademicSemesterValidation.updateAcademicSemesterZodSchema),
+  AcademicSemesterController.updateSemester
 );
-routes.delete('/:id', academicSemesterController.deleteSemester);
-routes.get('/', academicSemesterController.getAllSemesters);
 
-export const academicSemeterRoutes = routes;
+router.delete('/:id', AcademicSemesterController.deleteSemester);
+
+router.get('/', AcademicSemesterController.getAllSemesters);
+
+export const AcademicSemesterRoutes = router;

@@ -1,4 +1,3 @@
-// custom error class
 class ApiError extends Error {
   statusCode: number;
 
